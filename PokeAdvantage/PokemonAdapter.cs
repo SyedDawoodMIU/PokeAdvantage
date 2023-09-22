@@ -14,9 +14,17 @@ namespace PokeAdvantage
 
         }
 
-        public static TypeRelations AdaptTypeRelations(DamageRelationsDTO damageRelationsDTO)
+        public static TypeRelations AdaptTypeRelations(TypeRelationsDTO typeRelationsDTO)
         {
-            TypeRelations typeRelations = new(
+            return new TypeRelations(
+                 AdaptDamageRelations(typeRelationsDTO.DamageRelations)
+             );
+
+        }
+
+        public static DamageRelations AdaptDamageRelations(DamageRelationsDTO damageRelationsDTO)
+        {
+            DamageRelations typeRelations = new(
                         damageRelationsDTO.DoubleDamageTo.Select(AdaptDamage).ToList(),
                         damageRelationsDTO.DoubleDamageFrom.Select(AdaptDamage).ToList(),
                         damageRelationsDTO.HalfDamageTo.Select(AdaptDamage).ToList(),

@@ -1,52 +1,39 @@
-﻿using Newtonsoft.Json;
-using PokeAdvantage.Business;
-using PokeAdvantage.DTOs;
+﻿
+
+using Microsoft.Extensions.DependencyInjection;
+using PokeAdvantage.Implementation.Business;
+using PokeAdvantage.Implementation.Data;
+using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
+using PokeAdvantage.Strategy;
 
 namespace PokeAdvantage
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Console.WriteLine("Enter the name of the Pokemon:");
-            string? pokemonName = Console.ReadLine();
-            if (pokemonName != null)
-            {
-                string jsonResponse = PokemonApiClient.GetPokemonJsonAsync(pokemonName).Result;
-                if (jsonResponse != null)
-                {
-                    PokemonDTO apiPokemon = JsonConvert.DeserializeObject<PokemonDTO>(jsonResponse);
-                    if (apiPokemon != null)
-                    {
-                        Pokemon pokemon = PokemonAdapter.AdaptPokemon(apiPokemon);
-                        Console.WriteLine($"Pokemon: {pokemon.Name}");
-                        foreach (string type in pokemon.Types)
-                        {
-                            string types = PokemonApiClient.GetTypeRelationsJsonAsync(type).Result;
-                            if (types != null)
-                            {
-                                TypeRelationsDTO response = JsonConvert.DeserializeObject<TypeRelationsDTO>(types);
-                                if (response != null)
-                                {
-                                    TypeRelations typeRelations = PokemonAdapter.AdaptTypeRelations(response.DamageRelations);
+            IServiceCollection services = new ServiceCollection();
+            ConfigureServices(services);
 
-                                    List<string> strengths = CalculateDamage.DetermineStrengths(typeRelations);
-                                    List<string> weaknesses = CalculateDamage.DetermineWeaknesses(typeRelations);
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-                                    Console.WriteLine($"For type {type}:");
-                                    Console.WriteLine($"Strengths against: {string.Join(", ", strengths)}");
-                                    Console.WriteLine($"Weaknesses against: {string.Join(", ", weaknesses)}");
-                                    Console.WriteLine("\n\n");
-                                }
-                            }
+            var programEntry = serviceProvider.GetService<ProgramEntry>();
+            await programEntry.RunAsync();
+        }
 
-                        }
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IApiService, ApiService>();
+            services.AddSingleton<IDamageCalculator, BasicDamageCalculator>();
+            services.AddSingleton<IPokemonApiClient, PokemonApiClient>();
+            services.AddSingleton<IPokemonStrategy, CalculatePowerStrategy>();
+            services.AddSingleton<IUserInputManager, ConsoleInputManager>();
+            services.AddSingleton<IPokemonApiManager, PokemonApiManager>();
+            services.AddSingleton<IPokemonDataAdapter, PokemonDataAdapter>();
+            services.AddSingleton<IPokemonBusinessLogic, PokemonBusinessLogic>();
 
-
-                    }
-                }
-            }
+            services.AddTransient<ProgramEntry>();
         }
     }
 }

@@ -1,11 +1,19 @@
-using PokeAdvantage.DTOs;
+using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 
-namespace PokeAdvantage.Business
+namespace PokeAdvantage.Implementation.Business
 {
-    public class CalculateDamage
+    public class BasicDamageCalculator : IDamageCalculator
     {
-        public static List<string> DetermineStrengths(TypeRelations typeRelations)
+        public void CalculateDamage(PokemonContext pokemonContext)
+        {
+
+            DamageRelations damageRelations = pokemonContext.TypeRelations.DamageRelations;
+            pokemonContext.Pokemon.Strengths = DetermineStrengths(damageRelations);
+            pokemonContext.Pokemon.Weaknesses = DetermineWeaknesses(damageRelations);
+        }
+
+        private static List<string> DetermineStrengths(DamageRelations typeRelations)
         {
             List<string> strengths = new();
             strengths.AddRange(typeRelations.DoubleDamageTo.Select(x => x.Name));
@@ -14,7 +22,7 @@ namespace PokeAdvantage.Business
             return strengths.Distinct().ToList();
         }
 
-        public static List<string> DetermineWeaknesses(TypeRelations typeRelations)
+        private static List<string> DetermineWeaknesses(DamageRelations typeRelations)
         {
             List<string> weaknesses = new();
             weaknesses.AddRange(typeRelations.NoDamageTo.Select(x => x.Name));
@@ -23,4 +31,5 @@ namespace PokeAdvantage.Business
             return weaknesses.Distinct().ToList();
         }
     }
+
 }
