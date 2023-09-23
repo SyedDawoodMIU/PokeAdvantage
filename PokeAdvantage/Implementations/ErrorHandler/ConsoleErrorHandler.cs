@@ -12,6 +12,11 @@ namespace PokeAdvantage.Implementation.ErrorHandler
         }
         public void HandleError(Exception ex)
         {
+            if (ex is null)
+            {
+                _logger.LogError("The exception is null");
+                return;
+            }
             _logger.LogError($"An error occurred: {ex.Message}");
         }
     }

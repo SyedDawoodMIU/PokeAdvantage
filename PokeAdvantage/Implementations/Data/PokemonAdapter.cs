@@ -1,6 +1,7 @@
 using PokeAdvantage.DTOs;
 using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
+using static PokeAdvantage.Models.DamageRelations;
 
 namespace PokeAdvantage.Implementation.Data
 {
@@ -20,7 +21,7 @@ namespace PokeAdvantage.Implementation.Data
             {
                 return new Pokemon(
                     apiResponse.Name,
-                    apiResponse.Types.Select(t => t.Type.Name).ToList()
+                    apiResponse.Types?.Select(t => t.Type.Name).ToList() ?? new List<string>()
                 );
             }
             catch (Exception ex)
@@ -28,16 +29,16 @@ namespace PokeAdvantage.Implementation.Data
                 _errorHandler.HandleError(new Exception("Error adapting pokemon"));
                 return default!;
             }
-
         }
 
         public TypeRelations AdaptTypeRelations(TypeRelationsDTO typeRelationsDTO)
         {
             try
             {
-                return new TypeRelations(
-                    AdaptDamageRelations(typeRelationsDTO.DamageRelations)
-                );
+                TypeRelations typeRelations = new(
+                                    AdaptDamageRelations(typeRelationsDTO.DamageRelations)
+                                );
+                return typeRelations;
             }
             catch (Exception ex)
             {
@@ -51,21 +52,20 @@ namespace PokeAdvantage.Implementation.Data
         {
             try
             {
-                return new DamageRelations(
-                    damageRelationsDTO.DoubleDamageFrom.Select(AdaptDamage).ToList(),
-                    damageRelationsDTO.DoubleDamageTo.Select(AdaptDamage).ToList(),
-                    damageRelationsDTO.HalfDamageFrom.Select(AdaptDamage).ToList(),
-                    damageRelationsDTO.HalfDamageTo.Select(AdaptDamage).ToList(),
-                    damageRelationsDTO.NoDamageFrom.Select(AdaptDamage).ToList(),
-                    damageRelationsDTO.NoDamageTo.Select(AdaptDamage).ToList()
-                );
+                return new DamageRelationsBuilder()
+                    .WithDoubleDamageFrom(damageRelationsDTO.DoubleDamageFrom?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .WithDoubleDamageTo(damageRelationsDTO.DoubleDamageTo?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .WithHalfDamageFrom(damageRelationsDTO.HalfDamageFrom?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .WithHalfDamageTo(damageRelationsDTO.HalfDamageTo?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .WithNoDamageFrom(damageRelationsDTO.NoDamageFrom?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .WithNoDamageTo(damageRelationsDTO.NoDamageTo?.Select(AdaptDamage).ToList() ?? new List<Damage>())
+                    .Build();
             }
             catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error adapting damage relations"));
                 return default!;
             }
-
         }
 
         public Damage AdaptDamage(DamageTypeDTO damageTypeDTO)
