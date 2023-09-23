@@ -1,4 +1,5 @@
 using PokeAdvantage.@enum;
+using PokeAdvantage.Interfaces.Logging;
 
 namespace PokeAdvantage.Implementations.Logging
 {

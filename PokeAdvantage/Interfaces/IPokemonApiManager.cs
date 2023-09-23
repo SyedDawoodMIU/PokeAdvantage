@@ -1,6 +1,6 @@
 using PokeAdvantage.DTOs;
 
-namespace PokeAdvantage
+namespace PokeAdvantage.Interfaces
 {
     public interface IPokemonApiManager
 {

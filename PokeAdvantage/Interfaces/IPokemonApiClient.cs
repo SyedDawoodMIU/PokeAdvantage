@@ -1,4 +1,4 @@
-namespace PokeAdvantage
+namespace PokeAdvantage.Interfaces
 {
     public interface IPokemonApiClient
     {

@@ -1,4 +1,5 @@
 using PokeAdvantage.Interfaces;
+using PokeAdvantage.Interfaces.Logging;
 
 namespace PokeAdvantage.Implementation.ErrorHandler
 {

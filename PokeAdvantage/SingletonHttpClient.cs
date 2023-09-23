@@ -1,3 +1,5 @@
+using PokeAdvantage.Interfaces;
+
 namespace PokeAdvantage
 {
     public class SingletonHttpClient : ISingletonHttpClient

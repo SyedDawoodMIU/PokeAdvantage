@@ -1,7 +1,7 @@
 using PokeAdvantage.DTOs;
 using PokeAdvantage.Models;
 
-namespace PokeAdvantage
+namespace PokeAdvantage.Interfaces
 {
     public interface IPokemonDataAdapter
 {

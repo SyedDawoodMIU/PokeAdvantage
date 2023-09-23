@@ -1,3 +1,5 @@
+using PokeAdvantage.Interfaces;
+
 namespace PokeAdvantage.Implementation.Business
 {
     public class ConsoleInputManager : IUserInputManager

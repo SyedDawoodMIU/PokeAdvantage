@@ -7,6 +7,7 @@ using PokeAdvantage.Models;
 using PokeAdvantage.Implementation;
 using PokeAdvantage.Strategy;
 using PokeAdvantage.@enum;
+using PokeAdvantage.Interfaces.Logging;
 
 namespace PokeAdvantage
 {
@@ -68,7 +69,7 @@ namespace PokeAdvantage
             {
                 await FetchAndAdaptTypeData(type);
                 ApplyBusinessLogic();
-                NotifyAllObservers();
+                NotifyObservers();
             }
 
             _failedTypes.ForEach(type =>
@@ -102,7 +103,7 @@ namespace PokeAdvantage
                 }
 
                 retries--;
-                await Task.Delay(1000);
+                
             }
             return false;
         }
@@ -120,7 +121,7 @@ namespace PokeAdvantage
                     return _pokemonContext.TypeRelations != null;
                 }
                 retries--;
-                await Task.Delay(1000);
+                
             }
 
             AddToFailedTypes(type);
@@ -135,14 +136,6 @@ namespace PokeAdvantage
         private void ApplyBusinessLogic()
         {
             _businessLogic.ApplyPokemonStrategy(_pokemonContext);
-        }
-
-        private void NotifyAllObservers()
-        {
-            foreach (var observer in _observers)
-            {
-                observer.Update(_pokemonContext);
-            }
         }
 
 

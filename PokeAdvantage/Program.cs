@@ -7,6 +7,7 @@ using PokeAdvantage.Implementation.Data;
 using PokeAdvantage.Implementation.ErrorHandler;
 using PokeAdvantage.Implementations.Logging;
 using PokeAdvantage.Interfaces;
+using PokeAdvantage.Interfaces.Logging;
 using PokeAdvantage.Models;
 using PokeAdvantage.Strategy;
 
@@ -29,7 +30,7 @@ namespace PokeAdvantage
         {
             services.AddScoped<IObserver, ConsoleObserver>();
 
-            
+
             services.AddSingleton<ISingletonHttpClient, SingletonHttpClient>();
             services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
             services.AddSingleton<ILogger, ConsoleLogger>();

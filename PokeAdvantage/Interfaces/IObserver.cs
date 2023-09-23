@@ -1,7 +1,6 @@
-using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 
-namespace PokeAdvantage
+namespace PokeAdvantage.Interfaces
 {
     public interface IObserver
     {

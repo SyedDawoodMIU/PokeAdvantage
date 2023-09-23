@@ -1,6 +1,6 @@
 using PokeAdvantage.Models;
 
-namespace PokeAdvantage
+namespace PokeAdvantage.Interfaces
 {
     public interface IPokemonBusinessLogic
 {
