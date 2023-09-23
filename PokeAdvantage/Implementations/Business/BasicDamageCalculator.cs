@@ -29,7 +29,7 @@ namespace PokeAdvantage.Implementation.Business
             }
         }
 
-        private List<string> DetermineStrengths(DamageRelations typeRelations)
+        public List<string> DetermineStrengths(DamageRelations typeRelations)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace PokeAdvantage.Implementation.Business
             }
         }
 
-        private List<string> DetermineWeaknesses(DamageRelations typeRelations)
+        public List<string> DetermineWeaknesses(DamageRelations typeRelations)
         {
             try
             {

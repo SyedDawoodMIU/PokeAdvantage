@@ -27,6 +27,7 @@ namespace PokeAdvantage
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ISingletonHttpClient, SingletonHttpClient>();
             services.AddSingleton<IApiService, ApiService>();
             services.AddSingleton<IDamageCalculator, BasicDamageCalculator>();
             services.AddSingleton<IPokemonApiClient, PokemonApiClient>();

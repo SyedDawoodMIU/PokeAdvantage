@@ -1,7 +1,7 @@
 namespace PokeAdvantage
 {
-    public class SingletonHttpClient
+    public class SingletonHttpClient : ISingletonHttpClient
     {
-        public static HttpClient Instance { get; } = new();
+        public HttpClient Instance => new();
     }
 }

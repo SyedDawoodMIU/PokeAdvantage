@@ -6,7 +6,8 @@ namespace PokeAdvantage
     {
 
         private readonly IErrorHandler _errorHandler;
-        public ApiService(IErrorHandler errorHandler)
+        private readonly ISingletonHttpClient _singletonHttpClient;
+        public ApiService(IErrorHandler errorHandler, ISingletonHttpClient singletonHttpClient)
         {
             _errorHandler = errorHandler;
 
@@ -17,7 +18,20 @@ namespace PokeAdvantage
         {
             try
             {
-                HttpResponseMessage response = await SingletonHttpClient.Instance.GetAsync(url);
+                HttpResponseMessage response = await _singletonHttpClient.Instance.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _errorHandler.HandleError(new Exception("API call failed"));
+                    return default!;
+                }
+
+                if (response.Content is null)
+                {
+                    _errorHandler.HandleError(new Exception("No content returned from API"));
+                    return default!;
+                }
+
                 return await response.Content.ReadAsStringAsync();
             }
             catch (Exception)
@@ -27,6 +41,6 @@ namespace PokeAdvantage
             }
         }
 
-        
+
     }
 }
