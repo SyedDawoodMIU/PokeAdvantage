@@ -66,13 +66,16 @@ namespace PokeAdvantage.Tests
             mockApiClient.Setup(api => api.GetTypeRelationsAsync(It.IsAny<string>()))
                          .ReturnsAsync("{\"damage_relations\":\"Fire\"}");
             mockJsonHelper.Setup(helper => helper.Deserialize<TypeRelationsDTO>(It.IsAny<string>()))
-                          .Returns(new TypeRelationsDTO
+                          .Returns(new TypeRelationsDTO()
                           {
-                              DamageRelations = new DamageRelationsDTO
+                              DamageRelations = new DamageRelationsDTO()
                               {
-                                  DoubleDamageFrom = new List<DamageTypeDTO> { new DamageTypeDTO { Name = "Fire" } }
+                                  DoubleDamageFrom = new List<DamageTypeDTO>(){
+                                        new DamageTypeDTO(){
+                                            Name = "Fire"
+                                        }
+                                    }
                               }
-
                           });
 
             var manager = new PokemonApiManager(mockApiClient.Object, mockErrorHandler.Object, mockJsonHelper.Object);

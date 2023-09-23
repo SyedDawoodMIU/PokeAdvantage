@@ -1,6 +1,7 @@
 using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 using PokeAdvantage.Implementation.Business;
+using static PokeAdvantage.Models.DamageRelations;
 
 namespace PokeAdvantage.Tests
 {
@@ -82,14 +83,14 @@ namespace PokeAdvantage.Tests
             return new PokemonContext
             {
                 TypeRelations = new TypeRelations
-                (new DamageRelations(
-                       doubleDamageTo: new List<Damage> { new("ground", "url") },
-                       doubleDamageFrom: new List<Damage> { new("electric", "url") },
-                       halfDamageTo: new List<Damage> { new("water", "url") },
-                       halfDamageFrom: new List<Damage> { new("ghost", "url") },
-                       noDamageTo: new List<Damage> { new("steel", "url") },
-                       noDamageFrom: new List<Damage> { new("ice", "url") }
-                    )
+                (new DamageRelationsBuilder()
+                       .WithDoubleDamageTo(new List<Damage> { new("ground", "url") })
+                       .WithDoubleDamageFrom(new List<Damage> { new("electric", "url") })
+                       .WithHalfDamageTo(new List<Damage> { new("water", "url") })
+                       .WithHalfDamageFrom(new List<Damage> { new("ghost", "url") })
+                       .WithNoDamageTo(new List<Damage> { new("steel", "url") })
+                       .WithNoDamageFrom(new List<Damage> { new("ice", "url") })
+                       .Build()
                 ),
                 Pokemon = new Pokemon("charizard", new List<string>() { "fire", "flying" })
             };
