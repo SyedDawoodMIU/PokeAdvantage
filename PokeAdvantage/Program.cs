@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Extensions.DependencyInjection;
+using PokeAdvantage.Implementation;
 using PokeAdvantage.Implementation.Business;
 using PokeAdvantage.Implementation.Data;
 using PokeAdvantage.Implementation.ErrorHandler;
@@ -34,6 +35,7 @@ namespace PokeAdvantage
             services.AddSingleton<IPokemonDataAdapter, PokemonAdapter>();
             services.AddSingleton<IPokemonBusinessLogic, PokemonBusinessLogic>();
             services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
+            services.AddSingleton<IJsonHelper, NewtonSoftJsonHelper>();
 
             services.AddTransient<ProgramEntry>();
         }
