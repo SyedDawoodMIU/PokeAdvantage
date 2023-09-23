@@ -19,18 +19,18 @@ namespace PokeAdvantage.Tests
             var mockJsonHelper = new Mock<IJsonHelper>();
 
             mockApiClient.Setup(api => api.GetPokemonAsync(It.IsAny<string>()))
-                         .ReturnsAsync("{\"name\":\"pikachu\"}");
+                         .ReturnsAsync("{\"name\":\"fire\"}");
             mockJsonHelper.Setup(helper => helper.Deserialize<PokemonDTO>(It.IsAny<string>()))
-                          .Returns(new PokemonDTO { Name = "Pikachu" });
+                          .Returns(new PokemonDTO { Name = "fire" });
 
             var manager = new PokemonApiManager(mockApiClient.Object, mockErrorHandler.Object, mockJsonHelper.Object);
 
             // Act
-            var result = await manager.FetchPokemonData("pikachu");
+            var result = await manager.FetchPokemonData("fire");
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Pikachu", result.Name);
+            Assert.Equal("fire", result.Name);
         }
 
         [Fact]
@@ -42,13 +42,13 @@ namespace PokeAdvantage.Tests
             var mockJsonHelper = new Mock<IJsonHelper>();
 
             mockApiClient.Setup(api => api.GetPokemonAsync(It.IsAny<string>()))
-                         .ThrowsAsync(new Exception("API call failed"));
+                         .ThrowsAsync(new Exception("api call failed"));
             mockErrorHandler.Setup(handler => handler.HandleError(It.IsAny<Exception>()));
 
             var manager = new PokemonApiManager(mockApiClient.Object, mockErrorHandler.Object, mockJsonHelper.Object);
 
             // Act
-            var result = await manager.FetchPokemonData("pikachu");
+            var result = await manager.FetchPokemonData("fire");
 
             // Assert
             Assert.Null(result);
@@ -64,7 +64,7 @@ namespace PokeAdvantage.Tests
             var mockJsonHelper = new Mock<IJsonHelper>();
 
             mockApiClient.Setup(api => api.GetTypeRelationsAsync(It.IsAny<string>()))
-                         .ReturnsAsync("{\"damage_relations\":\"Fire\"}");
+                         .ReturnsAsync("{\"damage_relations\":\"fire\"}");
             mockJsonHelper.Setup(helper => helper.Deserialize<TypeRelationsDTO>(It.IsAny<string>()))
                           .Returns(new TypeRelationsDTO()
                           {
@@ -72,7 +72,7 @@ namespace PokeAdvantage.Tests
                               {
                                   DoubleDamageFrom = new List<DamageTypeDTO>(){
                                         new DamageTypeDTO(){
-                                            Name = "Fire"
+                                            Name = "fire"
                                         }
                                     }
                               }
@@ -81,11 +81,11 @@ namespace PokeAdvantage.Tests
             var manager = new PokemonApiManager(mockApiClient.Object, mockErrorHandler.Object, mockJsonHelper.Object);
 
             // Act
-            var result = await manager.FetchTypeRelationsAsync("Fire");
+            var result = await manager.FetchTypeRelationsAsync("fire");
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Fire", result.DamageRelations.DoubleDamageFrom.First().Name);
+            Assert.Equal("fire", result.DamageRelations.DoubleDamageFrom.First().Name);
         }
 
         [Fact]
@@ -98,13 +98,13 @@ namespace PokeAdvantage.Tests
             var mockJsonHelper = new Mock<IJsonHelper>();
 
             mockApiClient.Setup(api => api.GetPokemonAsync(It.IsAny<string>()))
-                         .ThrowsAsync(new Exception("API call failed"));
+                         .ThrowsAsync(new Exception("api call failed"));
             mockErrorHandler.Setup(handler => handler.HandleError(It.IsAny<Exception>()));
 
             var manager = new PokemonApiManager(mockApiClient.Object, mockErrorHandler.Object, mockJsonHelper.Object);
 
             // Act
-            var result = await manager.FetchTypeRelationsAsync("pikachu");
+            var result = await manager.FetchTypeRelationsAsync("fire");
 
             // Assert
             Assert.Null(result);

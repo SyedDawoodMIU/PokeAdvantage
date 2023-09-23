@@ -1,10 +1,7 @@
-using Xunit;
-using Moq;
 using PokeAdvantage.DTOs;
 using PokeAdvantage.Interfaces;
 using PokeAdvantage.Implementation.Data;
-using System.Collections.Generic;
-using PokeAdvantage.Models;
+
 
 namespace PokeAdvantage.Tests
 {
@@ -25,14 +22,14 @@ namespace PokeAdvantage.Tests
             // Arrange
             var pokemonDto = new PokemonDTO
             {
-                Name = "Pikachu",
+                Name = "fire",
                 Types = new List<ApiPokemonType>
                 {
                     new()
                     {
                         Type = new ApiPokemonTypeDetail()
                         {
-                            Name = "Electric"
+                            Name = "electric"
                         }
                     }
                 }
@@ -42,9 +39,9 @@ namespace PokeAdvantage.Tests
             var result = pokemonAdapter.AdaptPokemon(pokemonDto);
 
             // Assert
-            Assert.Equal("Pikachu", result.Name);
+            Assert.Equal("fire", result.Name);
             Assert.Single(result.Types);
-            Assert.Equal("Electric", result.Types[0]);
+            Assert.Equal("electric", result.Types[0]);
         }
 
         [Fact]
@@ -70,8 +67,8 @@ namespace PokeAdvantage.Tests
                 DamageRelations = new DamageRelationsDTO()
                 {
                     DoubleDamageFrom = new List<DamageTypeDTO>(){
-                                        new DamageTypeDTO(){
-                                            Name = "Fire"
+                                        new(){
+                                            Name = "fire"
                                         }
                                     }
                 }
@@ -81,7 +78,7 @@ namespace PokeAdvantage.Tests
             var result = pokemonAdapter.AdaptTypeRelations(typeRelationsDto);
 
             // Assert
-            Assert.Equal("Fire", result.DamageRelations.DoubleDamageFrom.First().Name);
+            Assert.Equal("fire", result.DamageRelations.DoubleDamageFrom.First().Name);
         }
 
         [Fact]
@@ -110,7 +107,7 @@ namespace PokeAdvantage.Tests
                     {
                         new()
                         {
-                            Name = "Fire"
+                            Name = "fire"
                         }
                     }
                 }
@@ -120,7 +117,7 @@ namespace PokeAdvantage.Tests
             var result = pokemonAdapter.AdaptTypeRelations(typeRelationsDto);
 
             // Assert
-            Assert.Equal("Fire", result.DamageRelations.DoubleDamageFrom.First().Name);
+            Assert.Equal("fire", result.DamageRelations.DoubleDamageFrom.First().Name);
         }
 
         [Fact]

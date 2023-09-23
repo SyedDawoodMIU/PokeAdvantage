@@ -1,8 +1,6 @@
-using Xunit;
-using Moq;
 using PokeAdvantage.Implementation.ErrorHandler;
-using PokeAdvantage.Interfaces;
 using System;
+using PokeAdvantage.Interfaces.Logging;
 
 namespace PokeAdvantage.Tests
 {
@@ -22,13 +20,13 @@ namespace PokeAdvantage.Tests
         public void HandleError_ShouldLogErrorMessage()
         {
             // Arrange
-            var exception = new Exception("Sample Error");
+            var exception = new Exception("sample error");
 
             // Act
             consoleErrorHandler.HandleError(exception);
 
             // Assert
-            mockLogger.Verify(m => m.LogError("An error occurred: Sample Error"), Times.Once);
+            mockLogger.Verify(m => m.LogError("An error occurred: sample error"), Times.Once);
         }
 
         [Fact]
@@ -41,7 +39,7 @@ namespace PokeAdvantage.Tests
             consoleErrorHandler.HandleError(exception);
 
             // Assert
-             mockLogger.Verify(m => m.LogError("The exception is null"), Times.Once);
+            mockLogger.Verify(m => m.LogError("The exception is null"), Times.Once);
         }
     }
 }

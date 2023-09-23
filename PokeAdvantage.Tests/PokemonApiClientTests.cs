@@ -12,7 +12,7 @@ namespace PokeAdvantage.Tests
             var mockErrorHandler = new Mock<IErrorHandler>();
 
             mockApiService.Setup(api => api.Fetch(It.IsAny<string>()))
-                          .ReturnsAsync("Fake Pokemon Data");
+                          .ReturnsAsync("fake pokemon data");
 
             var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
 
@@ -20,7 +20,7 @@ namespace PokeAdvantage.Tests
             var result = await client.GetPokemonAsync("charizard");
 
             // Assert
-            Assert.Equal("Fake Pokemon Data", result);
+            Assert.Equal("fake pokemon data", result);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace PokeAdvantage.Tests
             var mockErrorHandler = new Mock<IErrorHandler>();
 
             mockApiService.Setup(api => api.Fetch(It.IsAny<string>()))
-                          .ReturnsAsync("Fake Type Relations Data");
+                          .ReturnsAsync("fake type relations data");
 
             var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
 
@@ -61,7 +61,7 @@ namespace PokeAdvantage.Tests
             var result = await client.GetTypeRelationsAsync("fire");
 
             // Assert
-            Assert.Equal("Fake Type Relations Data", result);
+            Assert.Equal("fake type relations data", result);
         }
 
         [Fact]

@@ -1,11 +1,5 @@
-using Xunit;
-using Moq;
 using PokeAdvantage.Interfaces;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System;
 using System.Net;
-using System.Threading;
 
 namespace PokeAdvantage.Tests
 {
@@ -21,7 +15,7 @@ namespace PokeAdvantage.Tests
             var fakeHttpMessageHandler = new FakeHttpMessageHandler(new HttpResponseMessage()
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent("Fake API Data")
+                Content = new StringContent("fake api data")
                 
             });
 
@@ -33,12 +27,12 @@ namespace PokeAdvantage.Tests
             var result = await service.Fetch("https://fakeapi.com/pokemon/charizard");
 
             // Assert
-            Assert.Equal("Fake API Data", result);
+            Assert.Equal("fake api data", result);
         }
 
         public class FakeHttpMessageHandler : HttpMessageHandler
         {
-            private HttpResponseMessage response;
+            private readonly HttpResponseMessage response;
 
             public FakeHttpMessageHandler(HttpResponseMessage response)
             {

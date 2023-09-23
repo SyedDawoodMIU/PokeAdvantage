@@ -12,7 +12,7 @@ namespace PokeAdvantage.Tests
             // Arrange
             var mockErrorHandler = new Mock<IErrorHandler>();
             var jsonHelper = new NewtonSoftJsonHelper(mockErrorHandler.Object);
-            var testObject = new { Name = "Pikachu", Type = "Electric" };
+            var testObject = new { Name = "fire", Type = "electric" };
             var jsonString = JsonConvert.SerializeObject(testObject);
 
             // Act
@@ -20,8 +20,8 @@ namespace PokeAdvantage.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("Pikachu", (string)result.Name);
-            Assert.Equal("Electric", (string)result.Type);
+            Assert.Equal("fire", (string)result.Name);
+            Assert.Equal("electric", (string)result.Type);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace PokeAdvantage.Tests
             // Arrange
             var mockErrorHandler = new Mock<IErrorHandler>();
             var jsonHelper = new NewtonSoftJsonHelper(mockErrorHandler.Object);
-            var invalidJsonString = "Invalid JSON String";
+            var invalidJsonString = "invalid json string";
 
             // Act
             var result = jsonHelper.Deserialize<dynamic>(invalidJsonString);
