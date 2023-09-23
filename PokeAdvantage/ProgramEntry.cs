@@ -6,6 +6,7 @@ using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 using PokeAdvantage.Implementation;
 using PokeAdvantage.Strategy;
+using PokeAdvantage.@enum;
 
 namespace PokeAdvantage
 {
@@ -18,25 +19,32 @@ namespace PokeAdvantage
         private readonly List<IObserver> _observers;
 
         private readonly IErrorHandler _errorHandler;
+        private readonly ILogger _logger;
         private PokemonContext _pokemonContext;
+
 
         public ProgramEntry(IUserInputManager inputManager,
                             IPokemonApiManager apiManager,
                             IPokemonDataAdapter dataAdapter,
                             IPokemonBusinessLogic businessLogic,
-                            IErrorHandler errorHandler)
+                            IErrorHandler errorHandler,
+                            ILogger logger)
         {
             _inputManager = inputManager;
             _apiManager = apiManager;
             _dataAdapter = dataAdapter;
             _businessLogic = businessLogic;
             _errorHandler = errorHandler;
+            _logger = logger;
             _observers = new List<IObserver>();
             _pokemonContext = new PokemonContext();
         }
 
         public async Task RunAsync()
         {
+            _logger.SetLogLevel(LogLevel.Information);
+            _logger.LogInformation("Starting PokeAdvantage");
+
             AttachObserver(new ConsoleObserver());
             string? pokemonName = _inputManager.GetPokemonName();
             if (!string.IsNullOrEmpty(pokemonName))
@@ -69,6 +77,8 @@ namespace PokeAdvantage
             {
                 _errorHandler.HandleError(new Exception("The pokemon name is null or empty"));
             }
+
+            _logger.LogInformation("Ending PokeAdvantage");
         }
 
 

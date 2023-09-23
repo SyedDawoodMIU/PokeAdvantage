@@ -4,9 +4,15 @@ namespace PokeAdvantage.Implementation.ErrorHandler
 {
     public class ConsoleErrorHandler : IErrorHandler
     {
+        private readonly ILogger _logger;
+
+        public ConsoleErrorHandler(ILogger logger)
+        {
+            _logger = logger;
+        }
         public void HandleError(Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            _logger.LogError($"An error occurred: {ex.Message}");
         }
     }
 }

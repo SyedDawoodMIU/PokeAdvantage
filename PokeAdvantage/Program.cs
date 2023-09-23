@@ -5,6 +5,7 @@ using PokeAdvantage.Implementation;
 using PokeAdvantage.Implementation.Business;
 using PokeAdvantage.Implementation.Data;
 using PokeAdvantage.Implementation.ErrorHandler;
+using PokeAdvantage.Implementations.Logging;
 using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 using PokeAdvantage.Strategy;
@@ -36,8 +37,11 @@ namespace PokeAdvantage
             services.AddSingleton<IPokemonBusinessLogic, PokemonBusinessLogic>();
             services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
             services.AddSingleton<IJsonHelper, NewtonSoftJsonHelper>();
+            services.AddSingleton<IObserver, ConsoleObserver>();
+            services.AddSingleton<ILogger, ConsoleLogger>();
 
             services.AddTransient<ProgramEntry>();
+
         }
     }
 }
