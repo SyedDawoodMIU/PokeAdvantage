@@ -31,7 +31,7 @@ namespace PokeAdvantage.Implementation
                     return default!;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error deserializing Pokemon data from API"));
                 return default!;

@@ -20,7 +20,7 @@ namespace PokeAdvantage.Implementation.Business
             {
                 _pokemonStrategy.Execute(context);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error applying pokemon strategy"));
             }

@@ -56,15 +56,15 @@ namespace PokeAdvantage.Tests
         }
 
         [Fact]
-        public async Task FetchTypeRelationsAsync_ShouldReturnPokemonDTO_WhenApiCallSucceeds()
+        public async Task FetchTypeRelationsAsync_ShouldReturnTypeRelationsDTO_WhenApiCallSucceeds()
         {
             // Arrange
             var mockApiClient = new Mock<IPokemonApiClient>();
             var mockErrorHandler = new Mock<IErrorHandler>();
             var mockJsonHelper = new Mock<IJsonHelper>();
 
-            mockApiClient.Setup(api => api.GetPokemonAsync(It.IsAny<string>()))
-                         .ReturnsAsync("{\"name\":\"Fire\"}");
+            mockApiClient.Setup(api => api.GetTypeRelationsAsync(It.IsAny<string>()))
+                         .ReturnsAsync("{\"damage_relations\":\"Fire\"}");
             mockJsonHelper.Setup(helper => helper.Deserialize<TypeRelationsDTO>(It.IsAny<string>()))
                           .Returns(new TypeRelationsDTO
                           {
@@ -86,6 +86,7 @@ namespace PokeAdvantage.Tests
         }
 
         [Fact]
+
         public async Task FetchTypeRelationsAsync_ShouldHandleError_WhenApiCallFails()
         {
             // Arrange

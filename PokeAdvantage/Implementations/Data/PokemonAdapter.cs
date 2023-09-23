@@ -23,7 +23,7 @@ namespace PokeAdvantage.Implementation.Data
                     apiResponse.Types.Select(t => t.Type.Name).ToList()
                 );
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error adapting pokemon"));
                 return default!;
@@ -39,7 +39,7 @@ namespace PokeAdvantage.Implementation.Data
                     AdaptDamageRelations(typeRelationsDTO.DamageRelations)
                 );
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error adapting type relations"));
                 return default!;
@@ -60,7 +60,7 @@ namespace PokeAdvantage.Implementation.Data
                     damageRelationsDTO.NoDamageTo.Select(AdaptDamage).ToList()
                 );
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error adapting damage relations"));
                 return default!;
@@ -77,7 +77,7 @@ namespace PokeAdvantage.Implementation.Data
                     damageTypeDTO.Url
                 );
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error adapting damage"));
                 return default!;

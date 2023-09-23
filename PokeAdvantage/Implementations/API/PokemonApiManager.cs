@@ -22,12 +22,21 @@ namespace PokeAdvantage.Implementation.Business
         public async Task<PokemonDTO?> FetchPokemonData(string pokemonName)
         {
 
+            string jsonResponse;
             try
             {
-                string jsonResponse = await _pokemonApiClient.GetPokemonAsync(pokemonName);
-                return _jsonHelper.Deserialize<PokemonDTO>(jsonResponse);
+                jsonResponse = await _pokemonApiClient.GetPokemonAsync(pokemonName);
+                if (jsonResponse != null)
+                {
+                    return _jsonHelper.Deserialize<PokemonDTO>(jsonResponse);
+                }
+                else
+                {
+                    _errorHandler.HandleError(new Exception("Empty response from API"));
+                    return default!;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 _errorHandler.HandleError(new Exception("Error fetching Pokemon data from API"));
@@ -38,12 +47,21 @@ namespace PokeAdvantage.Implementation.Business
 
         public async Task<TypeRelationsDTO> FetchTypeRelationsAsync(string type)
         {
+            string jsonResponse;
             try
             {
-                string jsonResponse = await _pokemonApiClient.GetTypeRelationsAsync(type);
-                return _jsonHelper.Deserialize<TypeRelationsDTO>(jsonResponse);
+                jsonResponse = await _pokemonApiClient.GetTypeRelationsAsync(type);
+                if (jsonResponse != null)
+                {
+                    return _jsonHelper.Deserialize<TypeRelationsDTO>(jsonResponse);
+                }
+                else
+                {
+                    _errorHandler.HandleError(new Exception("Empty response from API"));
+                    return default!;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 _errorHandler.HandleError(new Exception("Error fetching Type data from API"));

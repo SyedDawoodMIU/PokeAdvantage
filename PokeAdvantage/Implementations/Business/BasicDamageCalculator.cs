@@ -21,7 +21,7 @@ namespace PokeAdvantage.Implementation.Business
                 pokemonContext.Pokemon.Strengths = DetermineStrengths(damageRelations);
                 pokemonContext.Pokemon.Weaknesses = DetermineWeaknesses(damageRelations);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 _errorHandler.HandleError(new Exception("Error calculating damage"));
@@ -39,7 +39,7 @@ namespace PokeAdvantage.Implementation.Business
                 strengths.AddRange(typeRelations.HalfDamageFrom.Select(x => x.Name));
                 return strengths.Distinct().ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 _errorHandler.HandleError(new Exception("Error calculating strengths"));
@@ -58,7 +58,7 @@ namespace PokeAdvantage.Implementation.Business
                 weaknesses.AddRange(typeRelations.DoubleDamageFrom.Select(x => x.Name));
                 return weaknesses.Distinct().ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 _errorHandler.HandleError(new Exception("Error calculating weaknesses"));

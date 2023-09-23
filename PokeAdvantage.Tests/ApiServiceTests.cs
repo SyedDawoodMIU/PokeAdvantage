@@ -30,7 +30,7 @@ namespace PokeAdvantage.Tests
             var service = new ApiService(mockErrorHandler.Object, mockSingletonHttpClient.Object);
 
             // Act
-            var result = await service.Fetch("api/pokemon/charizard");
+            var result = await service.Fetch("https://fakeapi.com/pokemon/charizard");
 
             // Assert
             Assert.Equal("Fake API Data", result);

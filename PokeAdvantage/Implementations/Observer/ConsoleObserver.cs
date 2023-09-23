@@ -25,7 +25,7 @@ namespace PokeAdvantage.Implementation
                 Console.WriteLine($"Strengths Against: {string.Join(",", pokemonContext.Pokemon.Strengths)}");
                 Console.WriteLine($"Weaknesses Against: {string.Join(",", pokemonContext.Pokemon.Weaknesses)}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error updating console"));
             }

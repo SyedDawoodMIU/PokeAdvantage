@@ -10,6 +10,7 @@ namespace PokeAdvantage
         public ApiService(IErrorHandler errorHandler, ISingletonHttpClient singletonHttpClient)
         {
             _errorHandler = errorHandler;
+            _singletonHttpClient = singletonHttpClient;
 
         }
 
@@ -34,7 +35,7 @@ namespace PokeAdvantage
 
                 return await response.Content.ReadAsStringAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error fetching data from API"));
                 return default!;

@@ -21,7 +21,7 @@ namespace PokeAdvantage
             {
                 return await _apiService.Fetch($"{_baseUrl}pokemon/{pokemonName}/");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error fetching Pokemon data from API"));
                 return default!;
@@ -34,7 +34,7 @@ namespace PokeAdvantage
             {
                 return await _apiService.Fetch($"{_baseUrl}type/{typeName}/");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _errorHandler.HandleError(new Exception("Error fetching Type data from API"));
                 return default!;
