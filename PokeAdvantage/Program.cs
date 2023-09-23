@@ -27,19 +27,22 @@ namespace PokeAdvantage
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IObserver, ConsoleObserver>();
+
+            
             services.AddSingleton<ISingletonHttpClient, SingletonHttpClient>();
-            services.AddSingleton<IApiService, ApiService>();
-            services.AddSingleton<IDamageCalculator, BasicDamageCalculator>();
-            services.AddSingleton<IPokemonApiClient, PokemonApiClient>();
-            services.AddSingleton<IPokemonStrategy, CalculatePowerStrategy>();
-            services.AddSingleton<IUserInputManager, ConsoleInputManager>();
-            services.AddSingleton<IPokemonApiManager, PokemonApiManager>();
-            services.AddSingleton<IPokemonDataAdapter, PokemonAdapter>();
-            services.AddSingleton<IPokemonBusinessLogic, PokemonBusinessLogic>();
             services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
-            services.AddSingleton<IJsonHelper, NewtonSoftJsonHelper>();
-            services.AddSingleton<IObserver, ConsoleObserver>();
             services.AddSingleton<ILogger, ConsoleLogger>();
+
+            services.AddTransient<IJsonHelper, NewtonSoftJsonHelper>();
+            services.AddTransient<IUserInputManager, ConsoleInputManager>();
+            services.AddTransient<IDamageCalculator, BasicDamageCalculator>();
+            services.AddTransient<IPokemonStrategy, CalculatePowerStrategy>();
+            services.AddTransient<IPokemonDataAdapter, PokemonAdapter>();
+            services.AddTransient<IPokemonApiClient, PokemonApiClient>();
+            services.AddTransient<IPokemonApiManager, PokemonApiManager>();
+            services.AddTransient<IPokemonBusinessLogic, PokemonBusinessLogic>();
+            services.AddTransient<IApiService, ApiService>();
 
             services.AddTransient<ProgramEntry>();
 

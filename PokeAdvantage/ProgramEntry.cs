@@ -21,6 +21,8 @@ namespace PokeAdvantage
         private readonly IErrorHandler _errorHandler;
         private readonly ILogger _logger;
         private PokemonContext _pokemonContext;
+        private List<string> _failedTypes;
+        private const int MAX_RETRIES = 3;
 
 
         public ProgramEntry(IUserInputManager inputManager,
@@ -38,47 +40,109 @@ namespace PokeAdvantage
             _logger = logger;
             _observers = new List<IObserver>();
             _pokemonContext = new PokemonContext();
+            _failedTypes = new List<string>();
+            SetupLogging();
+            AttachObserver(new ConsoleObserver());
+
         }
 
         public async Task RunAsync()
         {
-            _logger.SetLogLevel(LogLevel.Information);
             _logger.LogInformation("Starting PokeAdvantage");
 
-            AttachObserver(new ConsoleObserver());
-            string? pokemonName = _inputManager.GetPokemonName();
-            if (!string.IsNullOrEmpty(pokemonName))
+            string? pokemonName = GetUserInput();
+
+            if (string.IsNullOrEmpty(pokemonName))
+            {
+                _errorHandler.HandleError(new Exception("The Pokémon name is null or empty"));
+                return;
+            }
+
+            if (!await FetchAndAdaptPokemonData(pokemonName))
+            {
+                _errorHandler.HandleError(new Exception("The Pokémon data is null"));
+                return;
+            }
+
+            foreach (string type in _pokemonContext.Pokemon.Types)
+            {
+                await FetchAndAdaptTypeData(type);
+                ApplyBusinessLogic();
+                NotifyAllObservers();
+            }
+
+            _failedTypes.ForEach(type =>
+            {
+                _errorHandler.HandleError(new Exception($"The type {type} could not be fetched"));
+            });
+
+            _logger.LogInformation("Ending PokeAdvantage");
+        }
+
+        private void SetupLogging()
+        {
+            _logger.SetLogLevel(LogLevel.Information);
+        }
+
+        private string? GetUserInput()
+        {
+            return _inputManager.GetPokemonName();
+        }
+
+        private async Task<bool> FetchAndAdaptPokemonData(string pokemonName)
+        {
+            int retries = MAX_RETRIES;
+            while (retries > 0)
             {
                 PokemonDTO? apiPokemon = await _apiManager.FetchPokemonData(pokemonName);
                 if (apiPokemon != null)
                 {
                     _pokemonContext.Pokemon = _dataAdapter.AdaptPokemon(apiPokemon);
-                    if (_pokemonContext.Pokemon != null)
-                    {
-                        foreach (string type in _pokemonContext.Pokemon.Types)
-                        {
-
-                            TypeRelationsDTO typeRelationsDTO = await _apiManager.FetchTypeRelationsAsync(type);
-                            _pokemonContext.TypeRelations = _dataAdapter.AdaptTypeRelations(typeRelationsDTO);
-                            _pokemonContext.CurrentType = type;
-                            _businessLogic.ApplyPokemonStrategy(_pokemonContext);
-                            NotifyObservers();
-
-                        }
-                    }
-
+                    return _pokemonContext.Pokemon != null;
                 }
-                else
-                {
-                    _errorHandler.HandleError(new Exception("The pokemon data is null"));
-                }
+
+                retries--;
+                await Task.Delay(1000);
             }
-            else
+            return false;
+        }
+
+        private async Task<bool> FetchAndAdaptTypeData(string type)
+        {
+            int retries = MAX_RETRIES;
+            while (retries > 0)
             {
-                _errorHandler.HandleError(new Exception("The pokemon name is null or empty"));
+                TypeRelationsDTO typeRelationsDTO = await _apiManager.FetchTypeRelationsAsync(type);
+                if (typeRelationsDTO != null)
+                {
+                    _pokemonContext.TypeRelations = _dataAdapter.AdaptTypeRelations(typeRelationsDTO);
+                    _pokemonContext.CurrentType = type;
+                    return _pokemonContext.TypeRelations != null;
+                }
+                retries--;
+                await Task.Delay(1000);
             }
 
-            _logger.LogInformation("Ending PokeAdvantage");
+            AddToFailedTypes(type);
+            return false;
+        }
+
+        public void AddToFailedTypes(string failedType)
+        {
+            _failedTypes.Add(failedType);
+        }
+
+        private void ApplyBusinessLogic()
+        {
+            _businessLogic.ApplyPokemonStrategy(_pokemonContext);
+        }
+
+        private void NotifyAllObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.Update(_pokemonContext);
+            }
         }
 
 
