@@ -24,7 +24,7 @@ namespace PokeAdvantage
             catch (Exception)
             {
                 _errorHandler.HandleError(new Exception("Error fetching Pokemon data from API"));
-                return null;
+                return default!;
             }
         }
 
@@ -37,7 +37,7 @@ namespace PokeAdvantage
             catch (Exception)
             {
                 _errorHandler.HandleError(new Exception("Error fetching Type data from API"));
-                return null;
+                return default!;
             }
         }
     }

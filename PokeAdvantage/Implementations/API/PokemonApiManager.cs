@@ -31,7 +31,7 @@ namespace PokeAdvantage.Implementation.Business
             {
 
                 _errorHandler.HandleError(new Exception("Error fetching Pokemon data from API"));
-                return null;
+                return default!;
             }
 
         }

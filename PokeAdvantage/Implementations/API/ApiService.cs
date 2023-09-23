@@ -23,8 +23,10 @@ namespace PokeAdvantage
             catch (Exception)
             {
                 _errorHandler.HandleError(new Exception("Error fetching data from API"));
-                return null;
+                return default!;
             }
         }
+
+        
     }
 }
