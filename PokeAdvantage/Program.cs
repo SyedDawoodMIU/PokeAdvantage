@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PokeAdvantage.Implementation.Business;
 using PokeAdvantage.Implementation.Data;
+using PokeAdvantage.Implementation.ErrorHandler;
 using PokeAdvantage.Interfaces;
 using PokeAdvantage.Models;
 using PokeAdvantage.Strategy;
@@ -30,8 +31,9 @@ namespace PokeAdvantage
             services.AddSingleton<IPokemonStrategy, CalculatePowerStrategy>();
             services.AddSingleton<IUserInputManager, ConsoleInputManager>();
             services.AddSingleton<IPokemonApiManager, PokemonApiManager>();
-            services.AddSingleton<IPokemonDataAdapter, PokemonDataAdapter>();
+            services.AddSingleton<IPokemonDataAdapter, PokemonAdapter>();
             services.AddSingleton<IPokemonBusinessLogic, PokemonBusinessLogic>();
+            services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
 
             services.AddTransient<ProgramEntry>();
         }

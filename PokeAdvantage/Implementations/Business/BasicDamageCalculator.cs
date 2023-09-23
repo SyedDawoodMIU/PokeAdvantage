@@ -5,30 +5,65 @@ namespace PokeAdvantage.Implementation.Business
 {
     public class BasicDamageCalculator : IDamageCalculator
     {
+
+        private IErrorHandler _errorHandler;
+        public BasicDamageCalculator(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+        }
+
         public void CalculateDamage(PokemonContext pokemonContext)
         {
+            try
+            {
 
-            DamageRelations damageRelations = pokemonContext.TypeRelations.DamageRelations;
-            pokemonContext.Pokemon.Strengths = DetermineStrengths(damageRelations);
-            pokemonContext.Pokemon.Weaknesses = DetermineWeaknesses(damageRelations);
+                DamageRelations damageRelations = pokemonContext.TypeRelations.DamageRelations;
+                pokemonContext.Pokemon.Strengths = DetermineStrengths(damageRelations);
+                pokemonContext.Pokemon.Weaknesses = DetermineWeaknesses(damageRelations);
+            }
+            catch (Exception)
+            {
+
+                _errorHandler.HandleError(new Exception("Error calculating damage"));
+
+            }
         }
 
-        private static List<string> DetermineStrengths(DamageRelations typeRelations)
+        private List<string> DetermineStrengths(DamageRelations typeRelations)
         {
-            List<string> strengths = new();
-            strengths.AddRange(typeRelations.DoubleDamageTo.Select(x => x.Name));
-            strengths.AddRange(typeRelations.NoDamageFrom.Select(x => x.Name));
-            strengths.AddRange(typeRelations.HalfDamageFrom.Select(x => x.Name));
-            return strengths.Distinct().ToList();
+            try
+            {
+                List<string> strengths = new();
+                strengths.AddRange(typeRelations.DoubleDamageTo.Select(x => x.Name));
+                strengths.AddRange(typeRelations.NoDamageFrom.Select(x => x.Name));
+                strengths.AddRange(typeRelations.HalfDamageFrom.Select(x => x.Name));
+                return strengths.Distinct().ToList();
+            }
+            catch (Exception)
+            {
+
+                _errorHandler.HandleError(new Exception("Error calculating strengths"));
+                return default!;
+
+            }
         }
 
-        private static List<string> DetermineWeaknesses(DamageRelations typeRelations)
+        private List<string> DetermineWeaknesses(DamageRelations typeRelations)
         {
-            List<string> weaknesses = new();
-            weaknesses.AddRange(typeRelations.NoDamageTo.Select(x => x.Name));
-            weaknesses.AddRange(typeRelations.HalfDamageTo.Select(x => x.Name));
-            weaknesses.AddRange(typeRelations.DoubleDamageFrom.Select(x => x.Name));
-            return weaknesses.Distinct().ToList();
+            try
+            {
+                List<string> weaknesses = new();
+                weaknesses.AddRange(typeRelations.NoDamageTo.Select(x => x.Name));
+                weaknesses.AddRange(typeRelations.HalfDamageTo.Select(x => x.Name));
+                weaknesses.AddRange(typeRelations.DoubleDamageFrom.Select(x => x.Name));
+                return weaknesses.Distinct().ToList();
+            }
+            catch (Exception)
+            {
+
+                _errorHandler.HandleError(new Exception("Error calculating weaknesses"));
+                return default!;
+            }
         }
     }
 

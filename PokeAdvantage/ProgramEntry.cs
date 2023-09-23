@@ -16,14 +16,21 @@ namespace PokeAdvantage
         private readonly IPokemonDataAdapter _dataAdapter;
         private readonly IPokemonBusinessLogic _businessLogic;
         private readonly List<IObserver> _observers;
+
+        private readonly IErrorHandler _errorHandler;
         private PokemonContext _pokemonContext;
 
-        public ProgramEntry(IUserInputManager inputManager, IPokemonApiManager apiManager, IPokemonDataAdapter dataAdapter, IPokemonBusinessLogic businessLogic)
+        public ProgramEntry(IUserInputManager inputManager,
+                            IPokemonApiManager apiManager,
+                            IPokemonDataAdapter dataAdapter,
+                            IPokemonBusinessLogic businessLogic,
+                            IErrorHandler errorHandler)
         {
             _inputManager = inputManager;
             _apiManager = apiManager;
             _dataAdapter = dataAdapter;
             _businessLogic = businessLogic;
+            _errorHandler = errorHandler;
             _observers = new List<IObserver>();
             _pokemonContext = new PokemonContext();
         }
@@ -42,14 +49,25 @@ namespace PokeAdvantage
                     {
                         foreach (string type in _pokemonContext.Pokemon.Types)
                         {
+
                             TypeRelationsDTO typeRelationsDTO = await _apiManager.FetchTypeRelationsAsync(type);
                             _pokemonContext.TypeRelations = _dataAdapter.AdaptTypeRelations(typeRelationsDTO);
                             _pokemonContext.CurrentType = type;
                             _businessLogic.ApplyPokemonStrategy(_pokemonContext);
                             NotifyObservers();
+
                         }
                     }
+
                 }
+                else
+                {
+                    _errorHandler.HandleError(new Exception("The pokemon data is null"));
+                }
+            }
+            else
+            {
+                _errorHandler.HandleError(new Exception("The pokemon name is null or empty"));
             }
         }
 

@@ -7,4 +7,6 @@ namespace PokeAdvantage.Interfaces
 
 
     }
+
 }
+
