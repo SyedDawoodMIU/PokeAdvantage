@@ -23,7 +23,7 @@ namespace PokeAdvantage
         private readonly ILogger _logger;
         private PokemonContext _pokemonContext;
         private List<string> _failedTypes;
-        private const int MAX_RETRIES = 3;
+        private const int MAX_RETRIES = 1;
 
 
         public ProgramEntry(IUserInputManager inputManager,
@@ -55,13 +55,13 @@ namespace PokeAdvantage
 
             if (string.IsNullOrEmpty(pokemonName))
             {
-                _errorHandler.HandleError(new Exception("The Pokémon name is null or empty"));
+                _errorHandler.HandleError(new Exception("The Pokemon name is empty"));
                 return;
             }
 
             if (!await FetchAndAdaptPokemonData(pokemonName))
             {
-                _errorHandler.HandleError(new Exception("The Pokémon data is null"));
+                _errorHandler.HandleError(new Exception("The Pokemon data could not be received"));
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace PokeAdvantage
                 }
 
                 retries--;
-                
+
             }
             return false;
         }
@@ -121,7 +121,7 @@ namespace PokeAdvantage
                     return _pokemonContext.TypeRelations != null;
                 }
                 retries--;
-                
+
             }
 
             AddToFailedTypes(type);

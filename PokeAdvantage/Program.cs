@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PokeAdvantage.Implementation;
 using PokeAdvantage.Implementation.Business;
@@ -18,18 +19,27 @@ namespace PokeAdvantage
         public static async Task Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            ConfigureServices(services);
+            IConfigurationRoot _configuration = new ConfigurationBuilder()
+             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+             .AddJsonFile("appsettings.json").Build();
+
+
+            ConfigureServices(services, _configuration);
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
             var programEntry = serviceProvider.GetService<ProgramEntry>();
             await programEntry.RunAsync();
-        }
+            }
 
-        private static void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services, IConfigurationRoot _configuration)
         {
-            services.AddScoped<IObserver, ConsoleObserver>();
+            services.Configure<PokemonApiSettings>(c =>
+            {
+                c.BaseUrl = _configuration.GetSection("PokemonApiSettings:BaseUrl")?.Value;
+            });
 
+            services.AddScoped<IObserver, ConsoleObserver>();
 
             services.AddSingleton<ISingletonHttpClient, SingletonHttpClient>();
             services.AddSingleton<IErrorHandler, ConsoleErrorHandler>();
@@ -46,7 +56,6 @@ namespace PokeAdvantage
             services.AddTransient<IApiService, ApiService>();
 
             services.AddTransient<ProgramEntry>();
-
         }
     }
 }

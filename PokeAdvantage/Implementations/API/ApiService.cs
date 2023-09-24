@@ -23,7 +23,8 @@ namespace PokeAdvantage
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    _errorHandler.HandleError(new Exception("API call failed"));
+                    string content = await response.Content.ReadAsStringAsync();
+                    _errorHandler.HandleError(new Exception($"API call failed, the response from API was: {content}"));
                     return default!;
                 }
 

@@ -21,11 +21,13 @@ namespace PokeAdvantage.Implementation
         {
             try
             {
-                (string strengths, string weaknesses) = FormatPower(pokemonContext);
+                (string strengths, string weaknesses) = FormatPowers(pokemonContext);
 
+                Console.WriteLine("\n");
                 Console.WriteLine($"Pokemon type {pokemonContext.CurrentType} has:");
                 Console.WriteLine($"Strengths Against: {strengths}");
                 Console.WriteLine($"Weaknesses Against: {weaknesses}");
+                Console.WriteLine("\n");
             }
             catch (Exception ex)
             {
@@ -33,19 +35,19 @@ namespace PokeAdvantage.Implementation
             }
         }
 
-        private (string, string) FormatPower(PokemonContext pokemonContext)
+        private static (string, string) FormatPowers(PokemonContext pokemonContext)
         {
-            string strengths = "";
-            string weaknesses = "";
+            string strengths;
             if (pokemonContext.Pokemon.Strengths != null && pokemonContext.Pokemon.Strengths.Count > 0)
             {
-                strengths = string.Join(",", pokemonContext.Pokemon.Strengths);
+                strengths = string.Join(", ", pokemonContext.Pokemon.Strengths);
             }
             else
             {
                 strengths = "No strengths";
             }
 
+            string weaknesses;
             if (pokemonContext.Pokemon.Weaknesses != null && pokemonContext.Pokemon.Weaknesses.Count > 0)
             {
                 weaknesses = string.Join(",", pokemonContext.Pokemon.Weaknesses);

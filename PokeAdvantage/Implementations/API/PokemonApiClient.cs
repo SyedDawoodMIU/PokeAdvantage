@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Options;
 using PokeAdvantage.Interfaces;
+using PokeAdvantage.Models;
 namespace PokeAdvantage
 {
 
@@ -6,12 +8,13 @@ namespace PokeAdvantage
     {
 
         private readonly IErrorHandler _errorHandler;
-        private static readonly string _baseUrl = "https://pokeapi.co/api/v2/";
+        private readonly string _baseUrl;
         private IApiService _apiService;
-        public PokemonApiClient(IApiService apiService, IErrorHandler errorHandler)
+        public PokemonApiClient(IApiService apiService, IErrorHandler errorHandler, IOptions<PokemonApiSettings> settings)
         {
             _apiService = apiService;
             _errorHandler = errorHandler;
+            _baseUrl = settings.Value.BaseUrl;
         }
 
 
