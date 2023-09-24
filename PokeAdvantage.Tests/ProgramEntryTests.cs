@@ -54,7 +54,7 @@ namespace PokeAdvantage.Tests
 
             // Act and Assert
             await programEntry.RunAsync();
-            mockErrorHandler.Verify(e => e.HandleError(It.Is<Exception>(ex => ex.Message == "The Pokémon name is null or empty")), Times.Once);
+            mockErrorHandler.Verify(e => e.HandleError(It.Is<Exception>(ex => ex.Message == "The Pokemon name is null or empty")), Times.Once);
         }
 
         [Fact]

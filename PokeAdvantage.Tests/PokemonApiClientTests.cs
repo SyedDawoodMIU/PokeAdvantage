@@ -1,20 +1,33 @@
+using Microsoft.Extensions.Options;
 using PokeAdvantage.Interfaces;
+using PokeAdvantage.Models;
 
 namespace PokeAdvantage.Tests
 {
     public class PokemonApiClientTests
     {
+
+        private readonly Mock<IOptions<PokemonApiSettings>> options;
+
+        public PokemonApiClientTests()
+        {
+            var settings = new PokemonApiSettings { BaseUrl = "https://fakeapi.com/" };
+            options = new Mock<IOptions<PokemonApiSettings>>();
+            options.Setup(o => o.Value).Returns(settings);
+
+        }
         [Fact]
         public async Task GetPokemonAsync_ShouldReturnData_WhenApiServiceWorks()
         {
             // Arrange
             var mockApiService = new Mock<IApiService>();
             var mockErrorHandler = new Mock<IErrorHandler>();
+            var settings = new PokemonApiSettings { BaseUrl = "https://fakeapi.com/" };
 
             mockApiService.Setup(api => api.Fetch(It.IsAny<string>()))
                           .ReturnsAsync("fake pokemon data");
 
-            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
+            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object, options.Object);
 
             // Act
             var result = await client.GetPokemonAsync("charizard");
@@ -35,7 +48,7 @@ namespace PokeAdvantage.Tests
 
             mockErrorHandler.Setup(handler => handler.HandleError(It.IsAny<Exception>()));
 
-            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
+            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object, options.Object);
 
             // Act
             var result = await client.GetPokemonAsync("charizard");
@@ -55,7 +68,7 @@ namespace PokeAdvantage.Tests
             mockApiService.Setup(api => api.Fetch(It.IsAny<string>()))
                           .ReturnsAsync("fake type relations data");
 
-            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
+            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object, options.Object);
 
             // Act
             var result = await client.GetTypeRelationsAsync("fire");
@@ -76,7 +89,7 @@ namespace PokeAdvantage.Tests
 
             mockErrorHandler.Setup(handler => handler.HandleError(It.IsAny<Exception>()));
 
-            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object);
+            var client = new PokemonApiClient(mockApiService.Object, mockErrorHandler.Object, options.Object);
 
             // Act
             var result = await client.GetTypeRelationsAsync("fire");
