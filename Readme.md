@@ -30,7 +30,7 @@ PokeAdvantage is a console utility designed to help Pokemon trainers understand 
 1. Clone the repository from GitHub.
 
 ```bash
-git clone https://github.com/SyedDawoodMIU/Stuller.git
+git clone https://github.com/SyedDawoodMIU/PokeAdvantage.git
 ```
 
 2. Navigate to the project directory.
