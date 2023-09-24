@@ -33,25 +33,31 @@ PokeAdvantage is a console utility designed to help Pokemon trainers understand 
 git clone https://github.com/SyedDawoodMIU/PokeAdvantage.git
 ```
 
-2. Navigate to the project directory.
+2. Navigate to the solution directory.
 
 ```bash
 cd PokeAdvantage
 ```
 
-3. Restore the NuGet packages.
+3. Now navigate to the project directory.
+
+```bash
+cd PokeAdvantage
+```
+
+4. Restore the NuGet packages.
 
 ```bash
 dotnet restore
 ```
 
-4. Build the project.
+5. Build the project.
 
 ```bash
 dotnet build
 ```
 
-5. Run the project.
+6. Run the project.
 
 ```bash
 dotnet run
