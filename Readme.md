@@ -1,8 +1,8 @@
-# PokeAdvantage
+# PokemonAdvantage
 
 ## Overview
 
-PokeAdvantage is a console utility designed to help Pokemon trainers understand their strengths and weaknesses. Using modern design patterns and best practices, this utiltity fetches data from a Pokemon API and processes it to give its strengths and weaknesses according to Pokemon types.
+PokemonAdvantage is a console utility designed to help Pokemon trainers understand their strengths and weaknesses. Using modern design patterns and best practices, this utiltity fetches data from a Pokemon API and processes it to give its strengths and weaknesses according to Pokemon types.
 
 ## Technologies Used
 
@@ -30,19 +30,19 @@ PokeAdvantage is a console utility designed to help Pokemon trainers understand 
 1. Clone the repository from GitHub.
 
 ```bash
-git clone https://github.com/SyedDawoodMIU/PokeAdvantage.git
+git clone https://github.com/SyedDawoodMIU/PokemonAdvantage.git
 ```
 
 2. Navigate to the solution directory.
 
 ```bash
-cd PokeAdvantage
+cd PokemonAdvantage
 ```
 
 3. Now navigate to the project directory.
 
 ```bash
-cd PokeAdvantage
+cd PokemonAdvantage
 ```
 
 4. Restore the NuGet packages.
@@ -65,7 +65,7 @@ dotnet run
 
 ## Testing
 
-To run the unit tests, navigate to the `PokeAdvantage.Tests` directory and execute the following command:
+To run the unit tests, navigate to the `PokemonAdvantage.Tests` directory and execute the following command:
 
 ```bash
 dotnet test
